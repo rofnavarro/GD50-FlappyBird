@@ -29,3 +29,17 @@ require 'Bird'
 ]]
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
+
+--[[
+    Game
+]]
+
+--[[
+    Runs when the game first runs, only once
+	The bootstrap of the game
+]]
+function love.load()
+
+	--	setting filter to point blank, to take out the blurry from virtualization
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+end
