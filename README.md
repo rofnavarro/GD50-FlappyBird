@@ -1,4 +1,4 @@
-# CS50 - Game Develpment - FlappyBird
+# CS50 - Game Development - FlappyBird
 
   Flappy Bird is a game originaly released in 2013 and it was made by Nguyễn Hà Đông.
   
