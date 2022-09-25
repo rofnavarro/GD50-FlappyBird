@@ -58,7 +58,7 @@ function love.load()
 	--	setting the virtualization of the window, to make it look like old SNES
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
-        resizeble = true,
+        resizable = true,
         vsync = true
     })
 end
