@@ -30,6 +30,15 @@ require 'Bird'
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 
+VIRTUAL_WIDTH = 512
+VIRTUAL_HEIGHT = 288
+
+--[[
+    Local Variables
+]]
+local background = love.graphics.newImage('background.png')
+local ground = love.graphics.newImage('ground.png')
+
 --[[
     Game
 ]]
@@ -42,4 +51,50 @@ function love.load()
 
 	--	setting filter to point blank, to take out the blurry from virtualization
     love.graphics.setDefaultFilter('nearest', 'nearest')
+
+	--	setting the title of the screen
+    love.window.setTitle("Feno's Bird")
+
+	--	setting the virtualization of the window, to make it look like old SNES
+    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+        fullscreen = false,
+        resizeble = true,
+        vsync = true
+    })
+end
+
+--[[
+	Function to resize the window of the game with push library
+]]
+function love.resize(w, h)
+	push:resize(w, h)
+end
+
+--[[
+	Keyboard handling, called each frame
+	key is the key pressed so we can access
+]]
+function love.keypressed(key)
+
+    --	condition to verify if the 'esc' key is pressed to close the game
+	if key == 'escape' then
+		--	end the game if the event occurs
+		love.event.quit()
+    end
+end
+
+--[[
+	Called after update, used to draw anything in the screen
+]]
+function love.draw()
+
+    --	push virtualization initialized
+	push:apply('start')
+    
+    -- draw the image initiated
+    love.graphics.draw(background, 0, 0)
+    love.graphics.draw(ground, 0, VIRTUAL_HEIGHT - 16)
+
+    --	push virtualization must switch to end state
+	 push:apply('end')
 end
