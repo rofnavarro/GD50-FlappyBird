@@ -37,7 +37,13 @@ VIRTUAL_HEIGHT = 288
     Local Variables
 ]]
 local background = love.graphics.newImage('background.png')
+local backgroundScroll = 0
+local BACKGROUND_SPEED = 15
+local BACKGROUND_LOOPING_POINT = 413
+
 local ground = love.graphics.newImage('ground.png')
+local goundScroll = 0
+local GROUND_SPEED = 60
 
 --[[
     Game
@@ -84,6 +90,20 @@ function love.keypressed(key)
 end
 
 --[[
+	Runs every frame
+	dt is for delta time
+]]
+function love.update(dt)
+
+    --  make the background moves by the delta time
+    backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt)
+        % BACKGROUND_LOOPING_POINT
+
+    goundScroll = (goundScroll + GROUND_SPEED * dt)
+        % VIRTUAL_WIDTH
+end
+
+--[[
 	Called after update, used to draw anything in the screen
 ]]
 function love.draw()
@@ -92,8 +112,9 @@ function love.draw()
 	push:apply('start')
     
     -- draw the image initiated
-    love.graphics.draw(background, 0, 0)
-    love.graphics.draw(ground, 0, VIRTUAL_HEIGHT - 16)
+    love.graphics.draw(background, -backgroundScroll, 0)
+    
+    love.graphics.draw(ground, -goundScroll, VIRTUAL_HEIGHT - 16)
 
     --	push virtualization must switch to end state
 	 push:apply('end')
