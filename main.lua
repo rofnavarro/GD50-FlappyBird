@@ -70,7 +70,8 @@ function love.load()
         vsync = true
     })
 
-    bird:init()
+    --  setting the track of the keyboard
+    love.keyboard.keysPressed = {}
 end
 
 --[[
@@ -86,10 +87,24 @@ end
 ]]
 function love.keypressed(key)
 
+    --  track of the keyboard input
+    love.keyboard.keysPressed[key] = true
+    
     --	condition to verify if the 'esc' key is pressed to close the game
 	if key == 'escape' then
 		--	end the game if the event occurs
 		love.event.quit()
+    end
+end
+
+--[[
+    Re-write of the keyboard input
+]]
+function love.keyboard.wasPressed(key)
+    if love.keyboard.keysPressed[key] then
+        return true
+    else
+        return false
     end
 end
 
@@ -106,7 +121,11 @@ function love.update(dt)
     goundScroll = (goundScroll + GROUND_SPEED * dt)
         % VIRTUAL_WIDTH
 
+    --  updates the bird
     bird:update(dt)
+
+    --  reset the table of the keyboard input
+    love.keyboard.keysPressed = {}
 end
 
 --[[
