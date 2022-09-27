@@ -45,6 +45,8 @@ local ground = love.graphics.newImage('ground.png')
 local goundScroll = 0
 local GROUND_SPEED = 60
 
+local bird = Bird()
+
 --[[
     Game
 ]]
@@ -67,6 +69,8 @@ function love.load()
         resizable = true,
         vsync = true
     })
+
+    bird:init()
 end
 
 --[[
@@ -101,6 +105,8 @@ function love.update(dt)
 
     goundScroll = (goundScroll + GROUND_SPEED * dt)
         % VIRTUAL_WIDTH
+
+    bird:update(dt)
 end
 
 --[[
@@ -116,6 +122,7 @@ function love.draw()
     
     love.graphics.draw(ground, -goundScroll, VIRTUAL_HEIGHT - 16)
 
+    bird:render()
     --	push virtualization must switch to end state
 	 push:apply('end')
 end
