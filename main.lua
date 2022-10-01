@@ -24,6 +24,8 @@ Class = require 'class'
 --  calling the classes
 require 'Bird'
 
+require 'Pipe'
+
 --[[
     Global Variables
 ]]
@@ -47,6 +49,10 @@ local GROUND_SPEED = 60
 
 local bird = Bird()
 
+local pipes = {}
+
+local spawnTimer = 0
+
 --[[
     Game
 ]]
@@ -62,6 +68,9 @@ function love.load()
 
 	--	setting the title of the screen
     love.window.setTitle("Feno's Bird")
+
+    --  setting the seed for the random number
+    math.randomseed(os.time())
 
 	--	setting the virtualization of the window, to make it look like old SNES
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -121,8 +130,25 @@ function love.update(dt)
     goundScroll = (goundScroll + GROUND_SPEED * dt)
         % VIRTUAL_WIDTH
 
+	--	updates the timer to make it spawn pipes objects on table
+	spawnTimer = spawnTimer + dt
+	if spawnTimer > 2 then
+		table.insert(pipes, Pipe())
+		spawnTimer = 0
+	end
+
     --  updates the bird
     bird:update(dt)
+
+	--	updates all pipes on table position
+	for k, pipe in pairs(pipes) do
+		pipe:update(dt)
+
+		--	removes the pipes when they are completly out of the screen
+		if pipe.x < -pipe.width then
+			table.remove(pipes, k)
+		end
+	end
 
     --  reset the table of the keyboard input
     love.keyboard.keysPressed = {}
@@ -136,10 +162,15 @@ function love.draw()
     --	push virtualization initialized
 	push:apply('start')
     
-    -- draw the image initiated
+    --	draw the image initiated
     love.graphics.draw(background, -backgroundScroll, 0)
     
-    love.graphics.draw(ground, -goundScroll, VIRTUAL_HEIGHT - 16)
+	--	iterates over the table to render all pipes in it
+	for k, pipe in pairs(pipes) do
+		pipe:render()
+	end
+
+	love.graphics.draw(ground, -goundScroll, VIRTUAL_HEIGHT - 16)
 
     bird:render()
     --	push virtualization must switch to end state
