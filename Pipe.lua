@@ -8,7 +8,7 @@ local PIPE_SCROLL = -60
 function Pipe:init()
     --  setting the starting position of the object
 	self.x = VIRTUAL_WIDTH + 40
-	self.y = math.random(VIRTUAL_HEIGHT / 4, VIRTUAL_HEIGHT - 40)
+	self.y = math.random(VIRTUAL_HEIGHT / 4, VIRTUAL_HEIGHT - 60)
 
 	self.width = PIPE_IMAGE:getWidth()
 end
