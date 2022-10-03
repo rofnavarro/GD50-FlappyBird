@@ -26,6 +26,8 @@ require 'Bird'
 
 require 'Pipe'
 
+require 'PipePair'
+
 --[[
     Global Variables
 ]]
@@ -49,9 +51,11 @@ local GROUND_SPEED = 60
 
 local bird = Bird()
 
-local pipes = {}
+local pipePairs = {}
 
 local spawnTimer = 0
+
+local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
 --[[
     Game
@@ -133,20 +137,27 @@ function love.update(dt)
 	--	updates the timer to make it spawn pipes objects on table
 	spawnTimer = spawnTimer + dt
 	if spawnTimer > 2 then
-		table.insert(pipes, Pipe())
+		--	updates the y coordinate we placed the pair of pipes
+		--	no higher than 10px below the top edge of the screen and no lower than 90px bottom edge
+		local y = math.max(-PIPE_HEIGHT + 10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+		lastY = y
+
+		table.insert(pipePairs, PipePair(y))
 		spawnTimer = 0
 	end
 
     --  updates the bird
     bird:update(dt)
 
-	--	updates all pipes on table position
-	for k, pipe in pairs(pipes) do
-		pipe:update(dt)
-
-		--	removes the pipes when they are completly out of the screen
-		if pipe.x < -pipe.width then
-			table.remove(pipes, k)
+	--	updates all pipes on table
+	for k, pair in pairs(pipePairs) do
+		pair:update(dt)
+	end
+	
+	--	removes the pipes when they are completly out of the screen
+	for k, pair in pairs(pipePairs) do
+		if pair.remove then
+			table.remove(pipePairs, k)
 		end
 	end
 
@@ -160,19 +171,19 @@ end
 function love.draw()
 
     --	push virtualization initialized
-	push:apply('start')
+	push:start()
     
     --	draw the image initiated
     love.graphics.draw(background, -backgroundScroll, 0)
     
-	--	iterates over the table to render all pipes in it
-	for k, pipe in pairs(pipes) do
-		pipe:render()
+	--	iterates over the table to render all pipes
+	for k, pair in pairs(pipePairs) do
+		pair:render()
 	end
 
 	love.graphics.draw(ground, -goundScroll, VIRTUAL_HEIGHT - 16)
 
     bird:render()
     --	push virtualization must switch to end state
-	 push:apply('end')
+	 push:finish()
 end
