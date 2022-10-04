@@ -57,6 +57,8 @@ local spawnTimer = 0
 
 local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
+local scrolling = true
+
 --[[
     Game
 ]]
@@ -127,42 +129,47 @@ end
 ]]
 function love.update(dt)
 
-    --  make the background moves by the delta time
-    backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt)
-        % BACKGROUND_LOOPING_POINT
+	if scrolling then
+		--  make the background moves by the delta time
+		backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt)
+			% BACKGROUND_LOOPING_POINT
 
-    goundScroll = (goundScroll + GROUND_SPEED * dt)
-        % VIRTUAL_WIDTH
+		goundScroll = (goundScroll + GROUND_SPEED * dt)
+			% VIRTUAL_WIDTH
 
-	--	updates the timer to make it spawn pipes objects on table
-	spawnTimer = spawnTimer + dt
-	if spawnTimer > 2 then
-		--	updates the y coordinate we placed the pair of pipes
-		--	no higher than 10px below the top edge of the screen and no lower than 90px bottom edge
-		local y = math.max(-PIPE_HEIGHT + 10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
-		lastY = y
+		--	updates the timer to make it spawn pipes objects on table
+		spawnTimer = spawnTimer + dt
+		if spawnTimer > 2 then
+			--	updates the y coordinate we placed the pair of pipes
+			--	no higher than 10px below the top edge of the screen and no lower than 90px bottom edge
+			local y = math.max(-PIPE_HEIGHT + 10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+			lastY = y
 
-		table.insert(pipePairs, PipePair(y))
-		spawnTimer = 0
-	end
+			table.insert(pipePairs, PipePair(y))
+			spawnTimer = 0
+		end
 
-    --  updates the bird
-    bird:update(dt)
+		--  updates the bird
+		bird:update(dt)
 
-	--	updates all pipes on table
-	for k, pair in pairs(pipePairs) do
-		pair:update(dt)
-	end
-	
-	--	removes the pipes when they are completly out of the screen
-	for k, pair in pairs(pipePairs) do
-		if pair.remove then
-			table.remove(pipePairs, k)
+		--	updates all pipes on table
+		for k, pair in pairs(pipePairs) do
+			pair:update(dt)
+
+			for l, pipe in pairs(pair.pipes) do
+				if bird:collides(pipe) then
+					scrolling = false
+				end
+			end
+		
+		--	removes the pipes when they are completly out of the screen
+			if pair.x < -PIPE_WIDTH then
+				pair.remove = true
+			end
 		end
 	end
-
-    --  reset the table of the keyboard input
-    love.keyboard.keysPressed = {}
+	--  reset the table of the keyboard input
+	love.keyboard.keysPressed = {}
 end
 
 --[[
