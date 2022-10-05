@@ -16,7 +16,9 @@ function Bird:init()
     self.dy = 0
 end
 
+--	used to detect the collision
 function Bird:collides(pipe)
+	--	the raw numbers 2 and 4 are used to make more flexible and user friendly
 	if (self.x + 2) + (self.width - 4) >= pipe.x and self.x + 2 <= pipe.x + PIPE_WIDTH then
 		if (self.y +2) + (self.height - 4) >= pipe.y and self.y +2 <= pipe.y + PIPE_HEIGHT then
 			return true

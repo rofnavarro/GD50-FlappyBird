@@ -28,6 +28,11 @@ require 'Pipe'
 
 require 'PipePair'
 
+require 'StateMachine'
+require 'states/BaseState'
+require 'states/PlayState'
+require 'states/TitleScreenState'
+
 --[[
     Global Variables
 ]]
@@ -40,23 +45,30 @@ VIRTUAL_HEIGHT = 288
 --[[
     Local Variables
 ]]
+--	background variables
 local background = love.graphics.newImage('background.png')
 local backgroundScroll = 0
 local BACKGROUND_SPEED = 15
 local BACKGROUND_LOOPING_POINT = 413
 
+--	ground variables
 local ground = love.graphics.newImage('ground.png')
 local goundScroll = 0
 local GROUND_SPEED = 60
 
+--	bird object
 local bird = Bird()
 
+--	pipe pairs table
 local pipePairs = {}
 
+--	spawner track to instatiate objects
 local spawnTimer = 0
 
+--	track of the gap of pipe pairs to make the game playable
 local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
+--	track of collision
 local scrolling = true
 
 --[[
@@ -78,12 +90,23 @@ function love.load()
     --  setting the seed for the random number
     math.randomseed(os.time())
 
+	--	starting all the fonts used in game and setting the base font
+	fontsInit()
+	love.graphics.setFont(flappyFont)
+
 	--	setting the virtualization of the window, to make it look like old SNES
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = true,
         vsync = true
     })
+
+	--	initialize state machine with all state-returning functions
+	gStateMachine = StateMachine {
+		['title'] = function() return TitleScreenState() end,
+		['play'] = function() return PlayState() end,
+	}
+	gStateMachine:change('title')
 
     --  setting the track of the keyboard
     love.keyboard.keysPressed = {}
@@ -155,14 +178,15 @@ function love.update(dt)
 		--	updates all pipes on table
 		for k, pair in pairs(pipePairs) do
 			pair:update(dt)
-
+			
+			--	stop scrolling if collides to any pair of pipe on table
 			for l, pipe in pairs(pair.pipes) do
 				if bird:collides(pipe) then
 					scrolling = false
 				end
 			end
-		
-		--	removes the pipes when they are completly out of the screen
+			
+			--	removes the pipes when they are completly out of the screen
 			if pair.x < -PIPE_WIDTH then
 				pair.remove = true
 			end
@@ -193,4 +217,14 @@ function love.draw()
     bird:render()
     --	push virtualization must switch to end state
 	 push:finish()
+end
+
+--[[
+	Function to initialize all the fonts used in game
+]]
+function fontsInit()
+	smallFont = love.graphics.newFont('font.ttf', 8)
+	mediumFont = love.graphics.newFont('flappy.ttf', 14)
+	flappyFont = love.graphics.newFont('flappy.ttf', 28)
+	hugeFont = love.graphics.newFont('flappy,ttf', 56)
 end
