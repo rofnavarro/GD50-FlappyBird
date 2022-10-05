@@ -152,46 +152,15 @@ end
 ]]
 function love.update(dt)
 
-	if scrolling then
-		--  make the background moves by the delta time
-		backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt)
-			% BACKGROUND_LOOPING_POINT
+	--  make the background moves by the delta time
+	backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt) % BACKGROUND_LOOPING_POINT
 
-		goundScroll = (goundScroll + GROUND_SPEED * dt)
-			% VIRTUAL_WIDTH
+	--	make the ground moves by delta time
+	goundScroll = (goundScroll + GROUND_SPEED * dt) % VIRTUAL_WIDTH
 
-		--	updates the timer to make it spawn pipes objects on table
-		spawnTimer = spawnTimer + dt
-		if spawnTimer > 2 then
-			--	updates the y coordinate we placed the pair of pipes
-			--	no higher than 10px below the top edge of the screen and no lower than 90px bottom edge
-			local y = math.max(-PIPE_HEIGHT + 10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
-			lastY = y
+	--	update the state machine
+	gStateMachine:update(dt)
 
-			table.insert(pipePairs, PipePair(y))
-			spawnTimer = 0
-		end
-
-		--  updates the bird
-		bird:update(dt)
-
-		--	updates all pipes on table
-		for k, pair in pairs(pipePairs) do
-			pair:update(dt)
-			
-			--	stop scrolling if collides to any pair of pipe on table
-			for l, pipe in pairs(pair.pipes) do
-				if bird:collides(pipe) then
-					scrolling = false
-				end
-			end
-			
-			--	removes the pipes when they are completly out of the screen
-			if pair.x < -PIPE_WIDTH then
-				pair.remove = true
-			end
-		end
-	end
 	--  reset the table of the keyboard input
 	love.keyboard.keysPressed = {}
 end
@@ -204,17 +173,15 @@ function love.draw()
     --	push virtualization initialized
 	push:start()
     
-    --	draw the image initiated
+    --	draw the background
     love.graphics.draw(background, -backgroundScroll, 0)
     
-	--	iterates over the table to render all pipes
-	for k, pair in pairs(pipePairs) do
-		pair:render()
-	end
+	--	render state machine
+	gStateMachine:render()
 
+	--	draw the ground
 	love.graphics.draw(ground, -goundScroll, VIRTUAL_HEIGHT - 16)
 
-    bird:render()
     --	push virtualization must switch to end state
 	 push:finish()
 end
@@ -226,5 +193,5 @@ function fontsInit()
 	smallFont = love.graphics.newFont('font.ttf', 8)
 	mediumFont = love.graphics.newFont('flappy.ttf', 14)
 	flappyFont = love.graphics.newFont('flappy.ttf', 28)
-	hugeFont = love.graphics.newFont('flappy,ttf', 56)
+	hugeFont = love.graphics.newFont('flappy.ttf', 56)
 end
