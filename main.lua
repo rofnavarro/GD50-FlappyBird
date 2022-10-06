@@ -106,6 +106,7 @@ function love.load()
 		['title'] = function() return TitleScreenState() end,
 		['play'] = function() return PlayState() end,
 	}
+	--	set the 'title state' to the state machine
 	gStateMachine:change('title')
 
     --  setting the track of the keyboard

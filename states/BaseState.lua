@@ -1,3 +1,7 @@
+--[[
+	BaseState works like a 'handler'.
+	It implements empty methods so you can chose which methods you want to define
+]]
 BaseState = Class{}
 
 function BaseState:init() end
