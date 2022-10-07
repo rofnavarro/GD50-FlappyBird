@@ -25,7 +25,8 @@ function PlayState:update(dt)
 
 	--	used to create the new PipePair every 2s
 	if self.timer > 2 then
-		local y = math.max(-PIPE_HEIGHT +10, math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+		local y = math.max(-PIPE_HEIGHT + 10, math.min(
+			self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 100 - PIPE_HEIGHT))
 		self.lastY = y
 
 		table.insert(self.pipePairs, PipePair(y))
