@@ -6,6 +6,6 @@
 
 ****
 
-**Créditos***
+**Créditos**
 
 Música: Gianni Caratelli (gianni73@hotmail.com)
