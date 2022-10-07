@@ -1,6 +1,6 @@
 PipePair = Class{}
 
-local GAP_HEIGHT = 90
+local GAP_HEIGHT = 100
 
 --	used to instantiate the object and set it own variables
 function PipePair:init(y)
