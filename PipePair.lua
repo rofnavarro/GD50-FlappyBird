@@ -15,6 +15,9 @@ function PipePair:init(y)
 	}
 	--	if its ready to be removes from the scene
 	self.remove = false
+
+	--	if the player passed through the pipes
+	self.scored = false
 end
 
 --	used to update the position of the object
