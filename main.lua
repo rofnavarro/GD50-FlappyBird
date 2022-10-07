@@ -92,6 +92,9 @@ function love.load()
     --  setting the seed for the random number
     math.randomseed(os.time())
 
+	--	starting all the sound used in game
+	soundsInit()
+
 	--	starting all the fonts used in game and setting the base font
 	fontsInit()
 	love.graphics.setFont(flappyFont)
@@ -199,4 +202,13 @@ function fontsInit()
 	mediumFont = love.graphics.newFont('flappy.ttf', 14)
 	flappyFont = love.graphics.newFont('flappy.ttf', 28)
 	hugeFont = love.graphics.newFont('flappy.ttf', 56)
+end
+
+--[[
+
+]]
+function soundsInit()
+	sounds = {
+		[]
+	}
 end
