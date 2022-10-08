@@ -4,12 +4,12 @@ PIPE_SPEED = 60
 PIPE_HEIGHT = 288
 PIPE_WIDTH = 70
 
-BIRD_WIDTH = 38
-BIRD_HEIGHT = 24
+BUTTERFLY_WIDTH = 38
+BUTTERFLY_HEIGHT = 24
 
 --	used to initialize the PlayState and the objects
 function PlayState:init()
-	self.bird = Bird()
+	self.butterfly = Butterfly()
 	self.pipePairs = {}
 	self.timer = 0
 
@@ -38,7 +38,7 @@ function PlayState:update(dt)
 	for k, pair in pairs(self.pipePairs) do
 		if not pair.scored then
 			--	pass through the pipe
-			if pair.x + PIPE_WIDTH < self.bird.x then
+			if pair.x + PIPE_WIDTH < self.butterfly.x then
 				--	increment the score
 				self.score = self.score + 1
 				--	to ignore if already scored the pipes
@@ -57,12 +57,12 @@ function PlayState:update(dt)
 		end
 	end
 
-	self.bird:update(dt)
+	self.butterfly:update(dt)
 
-	--	used to track if the bird collides
+	--	used to track if the butterfly collides
 	for k, pair in pairs(self.pipePairs) do
 		for l, pipe in pairs(pair.pipes) do
-			if self.bird:collides(pipe) then
+			if self.butterfly:collides(pipe) then
 				sounds['explosion']:play()
 				sounds['hurt']:play()
 
@@ -73,8 +73,8 @@ function PlayState:update(dt)
 		end
 	end
 
-	-- used to track if the bird touches the floor
-	if self.bird.y > VIRTUAL_HEIGHT - 15 then
+	-- used to track if the butterfly touches the floor
+	if self.butterfly.y > VIRTUAL_HEIGHT - 15 then
 		sounds['explosion']:play()
 		sounds['hurt']:play()
 
@@ -93,5 +93,5 @@ function PlayState:render()
 	love.graphics.setFont(flappyFont)
 	love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
-	self.bird:render()
+	self.butterfly:render()
 end

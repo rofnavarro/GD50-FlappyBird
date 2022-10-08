@@ -22,7 +22,7 @@ push = require 'util/push'
 Class = require 'util/class'
 
 --  calling the classes
-require 'class/Bird'
+require 'class/Butterfly'
 
 require 'class/Pipe'
 
@@ -58,8 +58,8 @@ local ground = love.graphics.newImage('png/ground.png')
 local goundScroll = 0
 local GROUND_SPEED = 60
 
---	bird object
-local bird = Bird()
+--	butterfly object
+local butterfly = Butterfly()
 
 --	pipe pairs table
 local pipePairs = {}
@@ -87,7 +87,7 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
 	--	setting the title of the screen
-    love.window.setTitle("Drunken Bird")
+    love.window.setTitle("Drunk Butterfly")
 
     --  setting the seed for the random number
     math.randomseed(os.time())
