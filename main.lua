@@ -120,6 +120,9 @@ function love.load()
 	--	set the 'title state' to the state machine
 	gStateMachine:change('title')
 
+	--	setting the track of the mouse
+	love.mouse.buttonsPressed = {}
+
     --  setting the track of the keyboard
     love.keyboard.keysPressed = {}
 end
@@ -148,14 +151,24 @@ function love.keypressed(key)
 end
 
 --[[
+	Mouse handling, called each frame
+]]
+function love.mousepressed(x, y, button)
+	love.mouse.buttonsPressed[button] = true
+end
+
+--[[
     Re-write of the keyboard input
 ]]
 function love.keyboard.wasPressed(key)
-    if love.keyboard.keysPressed[key] then
-        return true
-    else
-        return false
-    end
+    return love.keyboard.keysPressed[key]
+end
+
+--[[
+	Re-write of the mouse input
+]]
+function love.mouse.wasPressed(button)
+	return love.mouse.buttonsPressed[button]
 end
 
 --[[
@@ -175,6 +188,7 @@ function love.update(dt)
 
 	--  reset the table of the keyboard input
 	love.keyboard.keysPressed = {}
+	love.mouse.buttonsPressed = {}
 end
 
 --[[
