@@ -34,6 +34,7 @@ function Bird:update(dt)
     --  condition to make jump
     if love.keyboard.wasPressed ('space') then
         self.dy = -5
+		sounds['jump']:play()
     end
 
     --  updating the position of the object

@@ -95,6 +95,10 @@ function love.load()
 	--	starting all the sound used in game
 	soundsInit()
 
+	--	starting the music and setting the loop
+	sounds['music']:setLooping(true)
+	sounds['music']:play()
+
 	--	starting all the fonts used in game and setting the base font
 	fontsInit()
 	love.graphics.setFont(flappyFont)
@@ -209,6 +213,12 @@ end
 ]]
 function soundsInit()
 	sounds = {
-		[]
+		['jump'] = love.audio.newSource('jump.wav', 'static'),
+		['explosion'] = love.audio.newSource('explosion.wav', 'static'),
+		['hurt'] = love.audio.newSource('hurt.wav', 'static'),
+		['score'] = love.audio.newSource('score.wav', 'static'),
+
+		--	https://freesound.org/people/xsgianni/sounds/388079/
+		['music'] = love.audio.newSource('marios_way.mp3', 'static')
 	}
 end
