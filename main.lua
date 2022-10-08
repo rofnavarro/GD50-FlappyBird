@@ -95,7 +95,7 @@ function love.load()
 	--	starting all the sound used in game
 	soundsInit()
 
-	--	starting the music and setting the loop
+	--	setting the music and loop
 	sounds['music']:setLooping(true)
 	sounds['music']:play()
 
