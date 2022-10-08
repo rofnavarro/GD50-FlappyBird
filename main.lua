@@ -15,20 +15,20 @@
 ]]
 --	push library allow to draw the game at a virtual resolution
 --	https://github.com/Ulydev/push
-push = require 'push'
+push = require 'util/push'
 
 --	class library allow to use classes and objects in lua
 --	https://github.com/vrld/hump/blob/master/class.lua
-Class = require 'class'
+Class = require 'util/class'
 
 --  calling the classes
-require 'Bird'
+require 'class/Bird'
 
-require 'Pipe'
+require 'class/Pipe'
 
-require 'PipePair'
+require 'class/PipePair'
 
-require 'StateMachine'
+require 'class/StateMachine'
 require 'states/BaseState'
 require 'states/CountdownState'
 require 'states/PlayState'
@@ -48,13 +48,13 @@ VIRTUAL_HEIGHT = 288
     Local Variables
 ]]
 --	background variables
-local background = love.graphics.newImage('background.png')
+local background = love.graphics.newImage('png/background.png')
 local backgroundScroll = 0
 local BACKGROUND_SPEED = 15
 local BACKGROUND_LOOPING_POINT = 413
 
 --	ground variables
-local ground = love.graphics.newImage('ground.png')
+local ground = love.graphics.newImage('png/ground.png')
 local goundScroll = 0
 local GROUND_SPEED = 60
 
@@ -202,10 +202,10 @@ end
 	Function to initialize all the fonts used in game
 ]]
 function fontsInit()
-	smallFont = love.graphics.newFont('font.ttf', 8)
-	mediumFont = love.graphics.newFont('flappy.ttf', 14)
-	flappyFont = love.graphics.newFont('flappy.ttf', 28)
-	hugeFont = love.graphics.newFont('flappy.ttf', 56)
+	smallFont = love.graphics.newFont('font/font.ttf', 8)
+	mediumFont = love.graphics.newFont('font/flappy.ttf', 14)
+	flappyFont = love.graphics.newFont('font/flappy.ttf', 28)
+	hugeFont = love.graphics.newFont('font/flappy.ttf', 56)
 end
 
 --[[
@@ -213,12 +213,12 @@ end
 ]]
 function soundsInit()
 	sounds = {
-		['jump'] = love.audio.newSource('jump.wav', 'static'),
-		['explosion'] = love.audio.newSource('explosion.wav', 'static'),
-		['hurt'] = love.audio.newSource('hurt.wav', 'static'),
-		['score'] = love.audio.newSource('score.wav', 'static'),
+		['jump'] = love.audio.newSource('audio/jump.wav', 'static'),
+		['explosion'] = love.audio.newSource('audio/explosion.wav', 'static'),
+		['hurt'] = love.audio.newSource('audio/hurt.wav', 'static'),
+		['score'] = love.audio.newSource('audio/score.wav', 'static'),
 
 		--	https://freesound.org/people/xsgianni/sounds/388079/
-		['music'] = love.audio.newSource('marios_way.mp3', 'static')
+		['music'] = love.audio.newSource('audio/marios_way.mp3', 'static')
 	}
 end

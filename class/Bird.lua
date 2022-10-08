@@ -4,7 +4,7 @@ local GRAVITY = 20
 
 --	used to instantiate the object and set it own variables
 function Bird:init()
-    self.image = love.graphics.newImage('bird.png')
+    self.image = love.graphics.newImage('png/bird.png')
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
 
