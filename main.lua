@@ -87,7 +87,7 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
 	--	setting the title of the screen
-    love.window.setTitle("Feno's Bird")
+    love.window.setTitle("Drunken Bird")
 
     --  setting the seed for the random number
     math.randomseed(os.time())
