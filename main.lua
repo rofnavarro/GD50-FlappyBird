@@ -44,6 +44,8 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
+PAUSE = false
+
 --[[
     Local Variables
 ]]
@@ -147,6 +149,12 @@ function love.keypressed(key)
 	if key == 'escape' then
 		--	end the game if the event occurs
 		love.event.quit()
+	elseif key == 'p' then
+		if PAUSE == false then
+			PAUSE = true
+		elseif PAUSE == true then
+			PAUSE = false
+		end
     end
 end
 
@@ -177,12 +185,13 @@ end
 ]]
 function love.update(dt)
 
-	--  make the background moves by the delta time
-	backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt) % BACKGROUND_LOOPING_POINT
+	if PAUSE == false then
+		--  make the background moves by the delta time
+		backgroundScroll = (backgroundScroll + BACKGROUND_SPEED * dt) % BACKGROUND_LOOPING_POINT
 
-	--	make the ground moves by delta time
-	goundScroll = (goundScroll + GROUND_SPEED * dt) % VIRTUAL_WIDTH
-
+		--	make the ground moves by delta time
+		goundScroll = (goundScroll + GROUND_SPEED * dt) % VIRTUAL_WIDTH
+	end
 	--	update the state machine
 	gStateMachine:update(dt)
 

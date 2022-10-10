@@ -48,7 +48,9 @@ end
 
 --	used to update the current state
 function StateMachine:update(dt)
-	self.current:update(dt)
+	if PAUSE == false then
+		self.current:update(dt)
+	end
 end
 
 --	used to render the current state
