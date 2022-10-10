@@ -4,8 +4,3 @@
   
   This is a study of the implementation of the game in lua programming language.
 
-****
-
-**Créditos**
-
-Música: Gianni Caratelli (gianni73@hotmail.com)
